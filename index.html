@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích Dòng tiền</title>
+    <meta name="description" content="Biểu đồ phân tán và bảng dữ liệu giao dịch tự doanh và khối ngoại.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Vanilla CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header glass-panel" style="flex-direction: column; gap: 8px; text-align: center;">
+            <div class="header-content" style="width: 100%;">
+                <h1>Phân tích Dòng tiền Thị trường</h1>
+                <p class="subtitle">Giao dịch Tự doanh vs Khối ngoại</p>
+                <p class="update-time" id="update-time"
+                    style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">Dữ liệu cập nhật: ...</p>
+                <p class="contact-info"
+                    style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; font-weight: 500;">Liên hệ
+                    hỗ trợ: Minh Hiếu | Zalo: 096.499.3634</p>
+            </div>
+        </header>
+
+        <!-- Main Content Column -->
+        <main class="main-column" style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+
+            <!-- Scatter Plot -->
+            <section class="card glass-panel chart-section">
+                <div class="card-header" style="justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <h2 id="chart-title">Dòng tiền tổ chức (20 Ngày)</h2>
+                    <div class="controls">
+                        <button class="toggle-btn" data-metric="1">1 Ngày</button>
+                        <button class="toggle-btn" data-metric="5">5 Ngày</button>
+                        <button class="toggle-btn active" data-metric="20">20 Ngày</button>
+                    </div>
+                </div>
+                <div class="chart-container" id="scatter-plot">
+                    <!-- Plotly Chart injects here -->
+                </div>
+            </section>
+
+            <!-- AI Comment Card -->
+            <section class="card glass-panel ai-insight">
+                <div class="card-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                        </path>
+                    </svg>
+                    <h2>Hệ thống đánh giá</h2>
+                </div>
+                <div class="card-body">
+                    <div id="ai-comment-text" class="loading-text">Đang tải dữ liệu...</div>
+                </div>
+            </section>
+
+            <!-- Data Table -->
+            <section class="card glass-panel table-section">
+                <div class="card-header" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div style="display: flex; align-items: baseline; gap: 12px;">
+                        <h2>Bảng Dữ liệu</h2>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic;">Đơn vị: Tỷ
+                            đồng</span>
+                    </div>
+                    <input type="text" id="search-input" class="search-input" placeholder="Tìm mã CK..."
+                        autocomplete="off">
+                </div>
+                <div class="table-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="vertical-align: bottom;">Mã CK</th>
+                                <th colspan="3" style="text-align: center; border-bottom: none; padding-bottom: 4px;">Tự
+                                    doanh</th>
+                                <th colspan="3" style="text-align: center; border-bottom: none; padding-bottom: 4px;">
+                                    Khối ngoại</th>
+                            </tr>
+                            <tr>
+                                <th class="sortable" data-sort="PropNet">1 Ngày <span class="sort-icon"
+                                        id="sort-icon-prop1"></span></th>
+                                <th class="sortable" data-sort="PropNet_5">5 Ngày <span class="sort-icon"
+                                        id="sort-icon-prop5"></span></th>
+                                <th class="sortable" data-sort="PropNet_20">20 Ngày <span class="sort-icon"
+                                        id="sort-icon-prop20"></span></th>
+                                <th class="sortable" data-sort="ForeignNet">1 Ngày <span class="sort-icon"
+                                        id="sort-icon-foreign1"></span></th>
+                                <th class="sortable" data-sort="ForeignNet_5">5 Ngày <span class="sort-icon"
+                                        id="sort-icon-foreign5"></span></th>
+                                <th class="sortable" data-sort="ForeignNet_20">20 Ngày <span class="sort-icon"
+                                        id="sort-icon-foreign20"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Footer / Disclaimer -->
+            <footer
+                style="margin-top: 16px; margin-bottom: 24px; text-align: center; font-size: 0.8rem; color: var(--text-secondary); padding: var(--spacing-lg); border-top: 1px solid var(--panel-border);">
+                <p><strong>Miễn trừ trách nhiệm:</strong> Các thông tin và nhận định trên hệ thống này chỉ mang tính
+                    chất tham khảo. Chúng tôi không chịu trách nhiệm cho bất kỳ quyết định đầu tư nào dựa trên dữ liệu
+                    này.</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <!-- PapaParse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Plotly for Scatter Plot -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <!-- App Data (bypass CORS) -->
+    <script src="data.js"></script>
+    <script src="ai-comment.js"></script>
+    <!-- App Logic -->
+    <script src="script.js"></script>
+</body>
+
+</html>
