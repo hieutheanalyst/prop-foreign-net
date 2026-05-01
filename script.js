@@ -40,11 +40,6 @@ const getColorClass = (num) => {
 
 // Initialize application
 async function init() {
-    const timeEl = document.getElementById('update-time');
-    if (timeEl) {
-        timeEl.textContent = 'Dữ liệu cập nhật: ' + new Date().toLocaleString('vi-VN');
-    }
-    
     await fetchAIComment();
     await fetchAndParseData();
     setupEventListeners();
@@ -114,6 +109,17 @@ async function fetchAndParseData() {
             skipEmptyLines: true,
             complete: function(results) {
                 globalData = results.data;
+                
+                // Get most recent date from CSV and append 17:59:02
+                if (globalData.length > 0 && globalData[0]['Date/Time']) {
+                    const dateTimeStr = globalData[0]['Date/Time'];
+                    const datePart = dateTimeStr.split(' ')[0]; // Extract the date part
+                    const timeEl = document.getElementById('update-time');
+                    if (timeEl) {
+                        timeEl.textContent = `Dữ liệu cập nhật: ${datePart} 17:59:02`;
+                    }
+                }
+                
                 updateDashboard();
                 renderTable(); // Initial render for table
             }
