@@ -10,17 +10,17 @@ const metricsConfig = {
     '1': {
         prop: 'PropNet',
         foreign: 'ForeignNet',
-        title: 'Dòng tiền (1 Ngày)',
+        title: 'Dòng tiền tổ chức',
     },
     '5': {
         prop: 'PropNet_5',
         foreign: 'ForeignNet_5',
-        title: 'Dòng tiền (5 Ngày)',
+        title: 'Dòng tiền tổ chức',
     },
     '20': {
         prop: 'PropNet_20',
         foreign: 'ForeignNet_20',
-        title: 'Dòng tiền (20 Ngày)',
+        title: 'Dòng tiền tổ chức',
     }
 };
 
