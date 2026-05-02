@@ -4,6 +4,8 @@ let currentMetric = '20'; // Can be '1', '5', or '20'
 let currentSortColumn = 'ForeignNet';
 let currentSortDirection = 'desc'; // 'asc' or 'desc'
 let searchQuery = '';
+let industryMapping = {};
+let currentIndustry = '';
 
 // Configuration for metrics mapping
 const metricsConfig = {
@@ -20,6 +22,11 @@ const metricsConfig = {
     '20': {
         prop: 'PropNet_20',
         foreign: 'ForeignNet_20',
+        title: 'Dòng tiền tổ chức',
+    },
+    'YTD': {
+        prop: 'PropNet_YTD',
+        foreign: 'ForeignNet_YTD',
         title: 'Dòng tiền tổ chức',
     }
 };
@@ -104,6 +111,19 @@ async function fetchAndParseData() {
             csvText = await response.text();
         }
         
+        // Parse Industry Data
+        if (typeof industryData !== 'undefined') {
+            Papa.parse(industryData, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    results.data.forEach(row => {
+                        industryMapping[row.stock_ticker] = row.industry;
+                    });
+                }
+            });
+        }
+        
         Papa.parse(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -140,23 +160,61 @@ function updateDashboard() {
 // Render Data Table
 function renderTable() {
     const tbody = document.querySelector('#data-table tbody');
+    const industryFilter = document.getElementById('industry-filter');
     
-    // Filter by search query
+    // Populate industry filter if not already done
+    if (industryFilter && industryFilter.options.length === 1 && Object.keys(industryMapping).length > 0) {
+        const industries = [...new Set(Object.values(industryMapping))].sort();
+        industries.forEach(ind => {
+            const opt = document.createElement('option');
+            opt.value = ind;
+            opt.textContent = ind;
+            industryFilter.appendChild(opt);
+        });
+    }
+
+    // Filter by search query and industry
     let filteredData = globalData;
+    
+    if (currentIndustry) {
+        filteredData = filteredData.filter(row => industryMapping[row.Ticker] === currentIndustry);
+    }
+
     if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        filteredData = globalData.filter(row => row.Ticker.toLowerCase().includes(query));
+        filteredData = filteredData.filter(row => {
+            const tickerMatch = row.Ticker.toLowerCase().includes(query);
+            const industry = industryMapping[row.Ticker] || '-';
+            const industryMatch = industry.toLowerCase().includes(query);
+            return tickerMatch || industryMatch;
+        });
     }
     
     // Sort Data
     const sortedData = [...filteredData].sort((a, b) => {
-        const valA = parseFloat(a[currentSortColumn]) || 0;
-        const valB = parseFloat(b[currentSortColumn]) || 0;
+        let valA, valB;
+        
+        if (currentSortColumn === 'Ticker') {
+            valA = a.Ticker;
+            valB = b.Ticker;
+        } else if (currentSortColumn === 'Industry') {
+            valA = industryMapping[a.Ticker] || '';
+            valB = industryMapping[b.Ticker] || '';
+        } else {
+            valA = parseFloat(a[currentSortColumn]) || 0;
+            valB = parseFloat(b[currentSortColumn]) || 0;
+        }
         
         if (valA === valB) {
             return a.Ticker.localeCompare(b.Ticker);
         }
         
+        if (typeof valA === 'string' && typeof valB === 'string') {
+            return currentSortDirection === 'asc' 
+                ? valA.localeCompare(valB) 
+                : valB.localeCompare(valA);
+        }
+
         if (currentSortDirection === 'asc') {
             return valA - valB;
         } else {
@@ -183,8 +241,14 @@ function renderTable() {
         tdTicker.textContent = row.Ticker;
         tr.appendChild(tdTicker);
         
+        // Industry
+        const tdIndustry = document.createElement('td');
+        tdIndustry.className = 'text-center';
+        tdIndustry.textContent = industryMapping[row.Ticker] || '-';
+        tr.appendChild(tdIndustry);
+        
         // Data Columns
-        const cols = ['PropNet', 'PropNet_5', 'PropNet_20', 'ForeignNet', 'ForeignNet_5', 'ForeignNet_20'];
+        const cols = ['PropNet', 'PropNet_5', 'PropNet_20', 'PropNet_YTD', 'ForeignNet', 'ForeignNet_5', 'ForeignNet_20', 'ForeignNet_YTD'];
         cols.forEach(col => {
             const td = document.createElement('td');
             const val = row[col];
@@ -348,6 +412,15 @@ function setupEventListeners() {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value;
             renderTable(); // Only re-render table, chart stays same
+        });
+    }
+
+    // Industry Filter
+    const industryFilter = document.getElementById('industry-filter');
+    if (industryFilter) {
+        industryFilter.addEventListener('change', (e) => {
+            currentIndustry = e.target.value;
+            renderTable();
         });
     }
 

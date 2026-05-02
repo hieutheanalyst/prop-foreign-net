@@ -1,0 +1,257 @@
+const industryData = `stock_ticker,industry
+AGG,BĐS dân cư
+CRE,BĐS dân cư
+DIG,BĐS dân cư
+DXG,BĐS dân cư
+DXS,BĐS dân cư
+HDC,BĐS dân cư
+HDG,BĐS dân cư
+HQC,BĐS dân cư
+IJC,BĐS dân cư
+KDH,BĐS dân cư
+KHG,BĐS dân cư
+LDG,BĐS dân cư
+NDN,BĐS dân cư
+NLG,BĐS dân cư
+NTL,BĐS dân cư
+NVL,BĐS dân cư
+PDR,BĐS dân cư
+SCR,BĐS dân cư
+TCH,BĐS dân cư
+TDH,BĐS dân cư
+VHM,Vin
+VPH,BĐS dân cư
+VRE,Vin
+VIC,Vin
+VPL,Vin
+BCM,Bất động sản KCN
+D2D,Bất động sản KCN
+GVR,Bất động sản KCN
+IDC,Bất động sản KCN
+ITA,Bất động sản KCN
+KBC,Bất động sản KCN
+LHG,Bất động sản KCN
+NTC,Bất động sản KCN
+PHR,Bất động sản KCN
+SIP,Bất động sản KCN
+SZC,Bất động sản KCN
+SZL,Bất động sản KCN
+TID,Bất động sản KCN
+VGC,Bất động sản KCN
+BVG,Thép
+HLA,Thép
+HPG,Thép
+HSG,Thép
+NKG,Thép
+POM,Thép
+SMC,Thép
+SSM,Thép
+TDS,Thép
+TIS,Thép
+TLH,Thép
+TNB,Thép
+TTS,Thép
+TVN,Thép
+VCA,Thép
+VDT,Thép
+VGS,Thép
+ASP,Dầu khí
+BSR,Dầu khí
+GAS,Dầu khí
+OIL,Dầu khí
+PCT,Dầu khí
+PDC,Dầu khí
+PFL,Dầu khí
+PGC,Dầu khí
+PGS,Dầu khí
+PLC,Dầu khí
+PLX,Dầu khí
+PVB,Dầu khí
+PVD,Dầu khí
+PVS,Dầu khí
+PVX,Dầu khí
+PXI,Dầu khí
+PXL,Dầu khí
+PXT,Dầu khí
+ABB,Ngân hàng
+ACB,Ngân hàng
+BAB,Ngân hàng
+BID,Ngân hàng
+BVB,Ngân hàng
+CTG,Ngân hàng
+EIB,Ngân hàng
+HDB,Ngân hàng
+KLB,Ngân hàng
+LPB,Ngân hàng
+MBB,Ngân hàng
+MSB,Ngân hàng
+NAB,Ngân hàng
+NVB,Ngân hàng
+OCB,Ngân hàng
+PGB,Ngân hàng
+SGB,Ngân hàng
+SHB,Ngân hàng
+SSB,Ngân hàng
+STB,Ngân hàng
+TCB,Ngân hàng
+TPB,Ngân hàng
+VAB,Ngân hàng
+VBB,Ngân hàng
+VCB,Ngân hàng
+VIB,Ngân hàng
+VPB,Ngân hàng
+BCG,Xây dựng
+C47,Xây dựng
+C69,Xây dựng
+CC1,Xây dựng
+CII,Xây dựng
+CTD,Xây dựng
+CTI,Xây dựng
+DPG,Xây dựng
+FCN,Xây dựng
+G36,Xây dựng
+HAN,Xây dựng
+HBC,Xây dựng
+HTN,Xây dựng
+HU4,Xây dựng
+HVH,Xây dựng
+ICN,Xây dựng
+IDJ,Xây dựng
+LCG,Xây dựng
+PC1,Xây dựng
+TV2,Xây dựng
+VCG,Xây dựng
+VNE,Xây dựng
+HHV,Xây dựng
+AGR,Chứng khoán
+APG,Chứng khoán
+BSI,Chứng khoán
+BVS,Chứng khoán
+CTS,Chứng khoán
+EVS,Chứng khoán
+FTS,Chứng khoán
+HBS,Chứng khoán
+HCM,Chứng khoán
+IVS,Chứng khoán
+MBS,Chứng khoán
+PSI,Chứng khoán
+SBS,Chứng khoán
+SHS,Chứng khoán
+SSI,Chứng khoán
+TVB,Chứng khoán
+TVS,Chứng khoán
+VCI,Chứng khoán
+VDS,Chứng khoán
+VIG,Chứng khoán
+VIX,Chứng khoán
+VCK,Chứng khoán
+TCX,Chứng khoán
+VPX,Chứng khoán
+WSS,Vận tải
+DVP,Vận tải
+GMD,Vận tải
+HAH,Vận tải
+HVN,Vận tải
+NCT,Vận tải
+PVT,Vận tải
+SCS,Vận tải
+SKG,Vận tải
+STG,Vận tải
+VJC,Vận tải
+VOS,Vận tải
+VSC,Vận tải
+VTP,Vận tải
+DGW,Thương mại
+FRT,Thương mại
+HAX,Thương mại
+MWG,Thương mại
+PET,Thương mại
+PNJ,Thương mại
+DBC,Nông sản
+HAG,Nông sản
+HNG,Nông sản
+LSS,Nông sản
+LTG,Nông sản
+PAN,Nông sản
+QNS,Nông sản
+SBT,Nông sản
+GIL,Dệt may
+MSH,Dệt may
+STK,Dệt may
+TCM,Dệt may
+TNG,Dệt may
+VGT,Dệt may
+ACC,Vật liệu xây dựng
+BCC,Vật liệu xây dựng
+BTS,Vật liệu xây dựng
+C32,Vật liệu xây dựng
+DHA,Vật liệu xây dựng
+GKM,Vật liệu xây dựng
+HT1,Vật liệu xây dựng
+KSB,Vật liệu xây dựng
+PTB,Vật liệu xây dựng
+THG,Vật liệu xây dựng
+TMX,Vật liệu xây dựng
+VCS,Vật liệu xây dựng
+VLB,Vật liệu xây dựng
+AVC,Điện
+BTP,Điện
+CHP,Điện
+GEG,Điện
+HND,Điện
+NT2,Điện
+POW,Điện
+PPC,Điện
+REE,Điện
+TBC,Điện
+VSH,Điện
+BFC,Phân bón – Hóa chất
+BMP,Phân bón – Hóa chất
+CSV,Phân bón – Hóa chất
+DAG,Phân bón – Hóa chất
+DCM,Phân bón – Hóa chất
+DDV,Phân bón – Hóa chất
+DGC,Phân bón – Hóa chất
+DPM,Phân bón – Hóa chất
+HII,Phân bón – Hóa chất
+LAS,Phân bón – Hóa chất
+PCE,Phân bón – Hóa chất
+PSW,Phân bón – Hóa chất
+SFG,Phân bón – Hóa chất
+AAA,Phân bón – Hóa chất
+AMV,Y tế
+CDP,Y tế
+DBD,Y tế
+DBT,Y tế
+DCL,Y tế
+DDN,Y tế
+DHG,Y tế
+DMC,Y tế
+DVN,Y tế
+IMP,Y tế
+JVC,Y tế
+TNH,Y tế
+TRA,Y tế
+VHE,Y tế
+VMD,Y tế
+CMG,Công nghệ
+ELC,Công nghệ
+FOX,Công nghệ
+FPT,Công nghệ
+ITD,Công nghệ
+SGT,Công nghệ
+TTN,Công nghệ
+VGI,Công nghệ
+KDC,Tiêu dùng
+MCH,Tiêu dùng
+MCM,Tiêu dùng
+MML,Tiêu dùng
+MSN,Tiêu dùng
+VNM,Tiêu dùng
+ANV,Thủy sản
+CMX,Thủy sản
+FMC,Thủy sản
+IDI,Thủy sản
+MPC,Thủy sản
+VHC,Thủy sản
+`;

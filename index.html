@@ -41,6 +41,7 @@
                         <button class="toggle-btn" data-metric="1">1 Ngày</button>
                         <button class="toggle-btn" data-metric="5">5 Ngày</button>
                         <button class="toggle-btn active" data-metric="20">20 Ngày</button>
+                        <button class="toggle-btn" data-metric="YTD">Từ đầu năm</button>
                     </div>
                 </div>
                 <div class="chart-container" id="scatter-plot">
@@ -72,17 +73,23 @@
                         <span style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic;">Đơn vị: Tỷ
                             đồng</span>
                     </div>
-                    <input type="text" id="search-input" class="search-input" placeholder="Tìm mã CK..."
-                        autocomplete="off">
+                    <div style="display: flex; gap: 8px; margin-left: auto;">
+                        <input type="text" id="search-input" class="search-input" placeholder="Tìm mã CK..."
+                            autocomplete="off">
+                        <select id="industry-filter" class="search-input" style="width: auto;">
+                            <option value="">Tất cả ngành</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="table-container">
                     <table id="data-table">
                         <thead>
                             <tr>
-                                <th rowspan="2" style="vertical-align: bottom;">Mã CK</th>
-                                <th colspan="3" style="text-align: center; border-bottom: none; padding-bottom: 4px;">Tự
+                                <th rowspan="2" class="sortable" data-sort="Ticker" style="vertical-align: bottom;">Mã CK <span class="sort-icon"></span></th>
+                                <th rowspan="2" class="sortable" data-sort="Industry" style="vertical-align: bottom;">Ngành <span class="sort-icon"></span></th>
+                                <th colspan="4" style="text-align: center; border-bottom: none; padding-bottom: 4px;">Tự
                                     doanh</th>
-                                <th colspan="3" style="text-align: center; border-bottom: none; padding-bottom: 4px;">
+                                <th colspan="4" style="text-align: center; border-bottom: none; padding-bottom: 4px;">
                                     Khối ngoại</th>
                             </tr>
                             <tr>
@@ -92,12 +99,16 @@
                                         id="sort-icon-prop5"></span></th>
                                 <th class="sortable" data-sort="PropNet_20">20 Ngày <span class="sort-icon"
                                         id="sort-icon-prop20"></span></th>
+                                <th class="sortable" data-sort="PropNet_YTD">YTD <span class="sort-icon"
+                                        id="sort-icon-propYTD"></span></th>
                                 <th class="sortable" data-sort="ForeignNet">1 Ngày <span class="sort-icon"
                                         id="sort-icon-foreign1"></span></th>
                                 <th class="sortable" data-sort="ForeignNet_5">5 Ngày <span class="sort-icon"
                                         id="sort-icon-foreign5"></span></th>
                                 <th class="sortable" data-sort="ForeignNet_20">20 Ngày <span class="sort-icon"
                                         id="sort-icon-foreign20"></span></th>
+                                <th class="sortable" data-sort="ForeignNet_YTD">YTD <span class="sort-icon"
+                                        id="sort-icon-foreignYTD"></span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,6 +136,7 @@
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
     <!-- App Data (bypass CORS) -->
     <script src="data.js"></script>
+    <script src="industry_data.js"></script>
     <script src="ai-comment.js"></script>
     <!-- App Logic -->
     <script src="script.js"></script>

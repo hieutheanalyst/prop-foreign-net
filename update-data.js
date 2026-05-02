@@ -22,6 +22,16 @@ try {
         console.log('✅ Updated data.js');
     }
 
+    // 3. Update industry_data.js
+    const industryPath = path.join(__dirname, 'stock_industry_classification.csv');
+    const industryJsPath = path.join(__dirname, 'industry_data.js');
+    if (fs.existsSync(industryPath)) {
+        const industryText = fs.readFileSync(industryPath, 'utf8');
+        const industryJs = `const industryData = \`${industryText.replace(/`/g, '\\`')}\`;`;
+        fs.writeFileSync(industryJsPath, industryJs);
+        console.log('✅ Updated industry_data.js');
+    }
+
     console.log('Hoàn tất! Bạn có thể F5 lại trình duyệt để xem dữ liệu mới.');
 } catch (error) {
     console.error('❌ Có lỗi xảy ra:', error);
