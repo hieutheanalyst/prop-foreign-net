@@ -4,7 +4,6 @@ let currentMetric = '20'; // Can be '1', '5', or '20'
 let currentSortColumn = 'ForeignNet';
 let currentSortDirection = 'desc'; // 'asc' or 'desc'
 let searchQuery = '';
-let industryMapping = {};
 let currentIndustry = '';
 
 // Configuration for metrics mapping
@@ -30,6 +29,19 @@ const metricsConfig = {
         title: 'Dòng tiền tổ chức',
     }
 };
+
+// Utility function for debouncing
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func.apply(this, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
 
 // Formatting Helper
 const formatNumber = (num) => {
@@ -111,19 +123,6 @@ async function fetchAndParseData() {
             csvText = await response.text();
         }
         
-        // Parse Industry Data
-        if (typeof industryData !== 'undefined') {
-            Papa.parse(industryData, {
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    results.data.forEach(row => {
-                        industryMapping[row.stock_ticker] = row.industry;
-                    });
-                }
-            });
-        }
-        
         Papa.parse(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -163,9 +162,8 @@ function renderTable() {
     const industryFilter = document.getElementById('industry-filter');
     
     // Populate industry filter if not already done
-    if (industryFilter && industryFilter.options.length === 1 && Object.keys(industryMapping).length > 0) {
-        const industries = [...new Set(Object.values(industryMapping))].sort();
-        industries.forEach(ind => {
+    if (industryFilter && industryFilter.options.length === 1 && typeof uniqueIndustries !== 'undefined') {
+        uniqueIndustries.forEach(ind => {
             const opt = document.createElement('option');
             opt.value = ind;
             opt.textContent = ind;
@@ -177,14 +175,14 @@ function renderTable() {
     let filteredData = globalData;
     
     if (currentIndustry) {
-        filteredData = filteredData.filter(row => industryMapping[row.Ticker] === currentIndustry);
+        filteredData = filteredData.filter(row => row.Industry === currentIndustry);
     }
 
     if (searchQuery) {
         const query = searchQuery.toLowerCase();
         filteredData = filteredData.filter(row => {
             const tickerMatch = row.Ticker.toLowerCase().includes(query);
-            const industry = industryMapping[row.Ticker] || '-';
+            const industry = row.Industry || '-';
             const industryMatch = industry.toLowerCase().includes(query);
             return tickerMatch || industryMatch;
         });
@@ -198,8 +196,8 @@ function renderTable() {
             valA = a.Ticker;
             valB = b.Ticker;
         } else if (currentSortColumn === 'Industry') {
-            valA = industryMapping[a.Ticker] || '';
-            valB = industryMapping[b.Ticker] || '';
+            valA = a.Industry || '';
+            valB = b.Industry || '';
         } else {
             valA = parseFloat(a[currentSortColumn]) || 0;
             valB = parseFloat(b[currentSortColumn]) || 0;
@@ -232,6 +230,9 @@ function renderTable() {
     
     tbody.innerHTML = '';
     
+    // Sử dụng DocumentFragment để tối ưu hóa việc chèn DOM
+    const fragment = document.createDocumentFragment();
+    
     sortedData.forEach(row => {
         const tr = document.createElement('tr');
         
@@ -244,7 +245,7 @@ function renderTable() {
         // Industry
         const tdIndustry = document.createElement('td');
         tdIndustry.className = 'text-center';
-        tdIndustry.textContent = industryMapping[row.Ticker] || '-';
+        tdIndustry.textContent = row.Industry || '-';
         tr.appendChild(tdIndustry);
         
         // Data Columns
@@ -257,8 +258,10 @@ function renderTable() {
             tr.appendChild(td);
         });
         
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
     });
+    
+    tbody.appendChild(fragment);
 }
 
 // Render Plotly Scatter Plot
@@ -409,10 +412,10 @@ function setupEventListeners() {
     // Search Input
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
+        searchInput.addEventListener('input', debounce((e) => {
             searchQuery = e.target.value;
             renderTable(); // Only re-render table, chart stays same
-        });
+        }, 300));
     }
 
     // Industry Filter
