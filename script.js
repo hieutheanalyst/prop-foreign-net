@@ -248,6 +248,12 @@ function renderTable() {
         tdIndustry.textContent = row.Industry || '-';
         tr.appendChild(tdIndustry);
         
+        // RS
+        const tdRS = document.createElement('td');
+        tdRS.className = 'text-center';
+        tdRS.textContent = row.RS_ngan_han || '-';
+        tr.appendChild(tdRS);
+        
         // Data Columns
         const cols = ['PropNet', 'PropNet_5', 'PropNet_20', 'PropNet_YTD', 'ForeignNet', 'ForeignNet_5', 'ForeignNet_20', 'ForeignNet_YTD'];
         cols.forEach(col => {
