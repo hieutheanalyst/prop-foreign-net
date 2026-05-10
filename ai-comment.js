@@ -4,6 +4,4 @@ Trạng thái tích lũy bền bỉ của khối ngoại tại MSN: MSN đang tr
 
 Sự trở lại của nhóm Ngân hàng Quốc doanh (BID): Sau giai đoạn tái cơ cấu danh mục, BID ghi nhận dòng tiền ngoại quay lại mua ròng mạnh mẽ (hơn 145 tỷ trong 5 phiên) đi kèm với sức mạnh giá RS đạt 86. Điều này cho thấy nhóm Ngân hàng dẫn dắt đang xác lập vùng đáy ngắn hạn và bắt đầu chu kỳ phục hồi cùng chỉ số chung.
 
-VIC và sự tái định giá nhóm Bất động sản trụ: VIC ghi nhận mức tăng trưởng giá ấn tượng 57% trong 20 phiên, đưa chỉ số RS lên mức 97. Điểm đáng chú ý là dòng tiền ngoại đã chuyển từ trạng thái bán ròng sang mua ròng hơn 134 tỷ trong phiên gần nhất, cho thấy áp lực xả hàng tại các mã trụ đã đi vào giai đoạn cuối và nhường chỗ cho kỳ vọng phục hồi.
-
 Sự suy yếu tạm thời tại nhóm Năng lượng (POW): Sau chuỗi ngày tăng nóng, POW bắt đầu chịu áp lực điều chỉnh kỹ thuật (-2.44% trong phiên) khi dòng tiền tổ chức nội có dấu hiệu chốt lời ngắn hạn. Tuy nhiên, với vị thế mua ròng 20 phiên vẫn giữ ở mức 658 tỷ từ khối ngoại, đây có thể chỉ là nhịp "nghỉ" để thiết lập nền giá mới trước khi tiếp tục xu hướng.`;
